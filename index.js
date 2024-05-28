@@ -10,7 +10,7 @@ function node(value) {
 }
 
 //create factory Tree
-function Tree(arr) {
+function Tree(arrayInitial) {
   //create buildTree which takes unsorted array with duplicate elements and forms a balanced bst and returns node
 
   function buildTree(arr) {
@@ -23,7 +23,7 @@ function Tree(arr) {
       }
       return hashet.keys();
     }
-    let arrayWithoutDuplicates = removeDuplicate(arr);
+    let arrayWithoutDuplicates = removeDuplicate(arrayInitial);
     //sort array
     let sortedArray = merge_s(arrayWithoutDuplicates);
     console.log(sortedArray);
@@ -46,14 +46,65 @@ function Tree(arr) {
       return nod;
     }
     var root = sortedArrayToBST(sortedArray, 0, sortedArray.length - 1);
+    return root;
+  }
+  var root = buildTree(arrayInitial);
+  //insert(value)
+  function insert(value) {
+    let newNode = node(value);
+    let temp = root;
+    console.log(temp);
+    while (temp.left || temp.right) {
+      if (value < temp.data) {
+        if (temp.left) {
+          temp = temp.left;
+        } else if (!temp.left) {
+          temp.left = newNode;
+          console.log(root);
+          return root;
+        }
+      } else if (value > temp.data) {
+        if (temp.right) {
+          temp = temp.right;
+        } else if (!temp.right) {
+          temp.right = newNode;
+          console.log(root);
+          return root;
+        }
+      }
+    }
+    if (!temp.left && !temp.right) {
+      if (value < temp.data) {
+        temp.left = newNode;
+      } else if (value > temp.data) {
+        temp.right = newNode;
+      }
+    }
     console.log(root);
+    return root;
   }
 
-  buildTree(arr);
-
   return {
+    root,
     buildTree,
+    insert,
   };
 }
 let array = [1, 3, 2, 2, 7, 7, 6, 5, 4, 2, 2];
-Tree(array);
+let rootNode = Tree(array);
+rootNode.insert(11);
+rootNode.insert(8);
+
+const prettyPrint = (node, prefix = "", isLeft = true) => {
+  if (node === null) {
+    return;
+  }
+  if (node.right !== null) {
+    prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+  }
+  console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+  if (node.left !== null) {
+    prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+  }
+};
+prettyPrint(rootNode.root);
