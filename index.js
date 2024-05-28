@@ -53,7 +53,7 @@ function Tree(arrayInitial) {
   function insert(value) {
     let newNode = node(value);
     let temp = root;
-    console.log(temp);
+
     while (temp.left || temp.right) {
       if (value < temp.data) {
         if (temp.left) {
@@ -80,11 +80,44 @@ function Tree(arrayInitial) {
         temp.right = newNode;
       }
     }
-    console.log(root);
     return root;
+  }
+  // delete(value)
+  function deleteValue(value) {
+    let temp = root;
+    let parent = temp;
+    console.log(temp);
+    while (temp.data != value) {
+      if (value < temp.data) {
+        if (temp.left) {
+          parent = temp;
+          temp = temp.left;
+        } else if (!temp.left) {
+          return "No such Value!";
+        }
+      } else if (value > temp.data) {
+        if (temp.right) {
+          parent = temp;
+          temp = temp.right;
+        } else if (!temp.right) {
+          return "No such Value!";
+        }
+      }
+    }
+    if (temp.data == value) {
+      //case1:delete a leaf node in bst
+      if (!temp.left && !temp.right) {
+        if (parent.data > value) {
+          parent.left = null;
+        } else if (value > parent.data) {
+          parent.right = null;
+        }
+      }
+    }
   }
 
   return {
+    deleteValue,
     root,
     buildTree,
     insert,
@@ -92,8 +125,7 @@ function Tree(arrayInitial) {
 }
 let array = [1, 3, 2, 2, 7, 7, 6, 5, 4, 2, 2];
 let rootNode = Tree(array);
-rootNode.insert(11);
-rootNode.insert(8);
+rootNode.deleteValue(7);
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
   if (node === null) {
