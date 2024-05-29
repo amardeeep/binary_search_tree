@@ -4,11 +4,11 @@ function hashSet() {
     const primeNumber = 31;
     for (let i = 0; i < key.length; i++) {
       hashCode = primeNumber * hashCode + key.charCodeAt(i);
-      hashCode = hashCode % 50;
+      hashCode = hashCode % 200;
     }
     return hashCode;
   }
-  let capacity = 50;
+  let capacity = 200;
   let arr = Array(capacity);
   function set(key) {
     let index = hash(key);
