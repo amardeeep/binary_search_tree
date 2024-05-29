@@ -239,7 +239,10 @@ function Tree(arrayInitial) {
     console.log(height);
     return height;
   }
+  //depth(node)
+
   return {
+    depth,
     height,
     postOrder,
     inOrder,
@@ -258,6 +261,7 @@ rootNode.preOrder(console.log);
 rootNode.inOrder(console.log);
 rootNode.postOrder(console.log);
 rootNode.height(node(6));
+rootNode.depth(node(6));
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
   if (node === null) {
