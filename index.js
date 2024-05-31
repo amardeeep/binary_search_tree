@@ -61,7 +61,6 @@ function Tree(arrayInitial) {
           temp = temp.left;
         } else if (!temp.left) {
           temp.left = newNode;
-          console.log(root);
           return root;
         }
       } else if (value > temp.data) {
@@ -69,7 +68,6 @@ function Tree(arrayInitial) {
           temp = temp.right;
         } else if (!temp.right) {
           temp.right = newNode;
-          console.log(root);
           return root;
         }
       }
@@ -87,7 +85,6 @@ function Tree(arrayInitial) {
   function deleteValue(value) {
     let temp = root;
     let parent = temp;
-    console.log(temp);
     while (temp.data != value) {
       if (value < temp.data) {
         if (temp.left) {
@@ -118,10 +115,9 @@ function Tree(arrayInitial) {
     }
   }
   // find(value)
+
   function find(value) {
     let temp = root;
-
-    console.log(temp);
     while (temp.data != value) {
       if (value < temp.data) {
         if (temp.left) {
@@ -222,28 +218,124 @@ function Tree(arrayInitial) {
     }
   }
   //height(node)
-  function height(node) {
+  /*function height(node) {
     let value = node.data;
-    let nodeup = find(value);
-    function heightUtility(node) {
+    let temp = root;
+    function find(value) {
+      if (temp.data == value && temp.data) {
+        return temp;
+      }
+      if (temp.left) {
+        temp = temp.left;
+        find(value);
+      }
+      if (temp.right) {
+        temp = temp.right;
+        find(value);
+      }
+    }
+    find(value);
+    function heightU(node) {
       if (!node) {
         return -1;
       } else {
-        var heightLeft = heightUtility(node.left);
-        var heightRight = heightUtility(node.right);
-        var ans = Math.max(heightLeft, heightRight) + 1;
+        var heightL = heightU(node.left);
+        console.log(node);
+        var heightR = heightU(node.right);
+        console.log(node);
+        var heightRe = Math.max(heightL, heightR) + 1;
+        console.log(heightRe);
       }
+      return heightRe;
+    }
+    return heightU(temp);
+  }*/
+  //function height
+  function heightOfNode(node) {
+    var height = -1;
+    function findHeightUtil(root, x) {
+      // Base Case
+      if (root == null) {
+        return -1;
+      }
+
+      // Store the maximum height of
+      // the left and right subtree
+      var leftHeight = findHeightUtil(root.left, x);
+
+      var rightHeight = findHeightUtil(root.right, x);
+
+      // Update height of the current node
+      var ans = Math.max(leftHeight, rightHeight) + 1;
+
+      // If current node is the required node
+      if (root.data == x) height = ans;
+
       return ans;
     }
-    var height = heightUtility(nodeup);
-    console.log(height);
+
+    // Function to find the height of
+    // a given node in a Binary Tree
+    function findHeight(root, x) {
+      // Stores height of the Tree
+      findHeightUtil(root, x);
+
+      // Return the height
+      return height;
+    }
+    findHeight(root, node.data);
     return height;
   }
-  //depth(node)
 
+  //depth(node)
+  function depth(node) {
+    let value = node.data;
+    let depth = 0;
+    function depth_utility(node, value) {
+      if (node.data == value) {
+        return depth;
+      } else if (value > node.data) {
+        depth++;
+        depth_utility(node.right, value);
+      } else if (value < node.data) {
+        depth++;
+        depth_utility(node.left, value);
+      }
+    }
+    depth_utility(root, value);
+    return depth;
+  }
+  //isBalanced
+  function isBalanced(node) {
+    if (node.left && node.right) {
+      let leftDepth = heightOfNode(node.left);
+      let rightDepth = heightOfNode(node.right);
+      if (
+        !(leftDepth - rightDepth == 1) &&
+        !(leftDepth - rightDepth == 0) &&
+        !(rightDepth - leftDepth == 1)
+      ) {
+        return "The tree is not balanced!";
+      }
+      isBalanced(node.left);
+      isBalanced(node.right);
+    } else if (node.left && !node.right) {
+      let leftDepth = heightOfNode(node.left);
+      if (leftDepth > 1) {
+        return "The tree is not balanced!";
+      } else if (node.right && node.left) {
+        let rightDepth = heightOfNode(node.right);
+        if (rightDepth > 1) {
+          return "The tree is not balanced!";
+        }
+      }
+    }
+    return "The tree is Balanced!";
+  }
   return {
+    isBalanced,
     depth,
-    height,
+    heightOfNode,
     postOrder,
     inOrder,
     preOrder,
@@ -257,11 +349,10 @@ function Tree(arrayInitial) {
 }
 let array = [1, 3, 2, 2, 7, 7, 6, 5, 4, 2, 2];
 let rootNode = Tree(array);
-rootNode.preOrder(console.log);
-rootNode.inOrder(console.log);
-rootNode.postOrder(console.log);
-rootNode.height(node(6));
-rootNode.depth(node(6));
+rootNode.insert(9);
+rootNode.insert(10);
+let isbalanced = rootNode.isBalanced(rootNode.root);
+console.log(isbalanced);
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
   if (node === null) {
