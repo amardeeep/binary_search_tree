@@ -24,9 +24,13 @@ function Tree(arrayInitial) {
       }
       return hashet.keys();
     }
-    let arrayWithoutDuplicates = removeDuplicate(arrayInitial);
+    let arrayWithoutDuplicates = removeDuplicate(arr);
+    let arrayOfNumber = [];
+    for (let ele of arrayWithoutDuplicates) {
+      arrayOfNumber.push(parseInt(ele));
+    }
     //sort array
-    let sortedArray = merge_s(arrayWithoutDuplicates);
+    let sortedArray = merge_s(arrayOfNumber);
     console.log(sortedArray);
     /* A function that constructs Balanced Binary Search Tree  
  from a sorted array */
@@ -217,39 +221,6 @@ function Tree(arrayInitial) {
       func(ele);
     }
   }
-  //height(node)
-  /*function height(node) {
-    let value = node.data;
-    let temp = root;
-    function find(value) {
-      if (temp.data == value && temp.data) {
-        return temp;
-      }
-      if (temp.left) {
-        temp = temp.left;
-        find(value);
-      }
-      if (temp.right) {
-        temp = temp.right;
-        find(value);
-      }
-    }
-    find(value);
-    function heightU(node) {
-      if (!node) {
-        return -1;
-      } else {
-        var heightL = heightU(node.left);
-        console.log(node);
-        var heightR = heightU(node.right);
-        console.log(node);
-        var heightRe = Math.max(heightL, heightR) + 1;
-        console.log(heightRe);
-      }
-      return heightRe;
-    }
-    return heightU(temp);
-  }*/
   //function height
   function heightOfNode(node) {
     var height = -1;
@@ -332,7 +303,25 @@ function Tree(arrayInitial) {
     }
     return "The tree is Balanced!";
   }
+  //rebalance
+  function rebalance(node) {
+    let arr = [];
+    function preorder(node) {
+      arr.push(node.data.toString());
+      if (node.left) {
+        preorder(node.left);
+      }
+      if (node.right) {
+        preorder(node.right);
+      }
+      return arr;
+    }
+    let data = preorder(node);
+    let rebuiltTree = buildTree(data);
+    return rebuiltTree;
+  }
   return {
+    rebalance,
     isBalanced,
     depth,
     heightOfNode,
@@ -353,6 +342,8 @@ rootNode.insert(9);
 rootNode.insert(10);
 let isbalanced = rootNode.isBalanced(rootNode.root);
 console.log(isbalanced);
+let rebuiltTree = rootNode.rebalance(rootNode.root);
+console.log(rebuiltTree);
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
   if (node === null) {
@@ -367,3 +358,4 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 prettyPrint(rootNode.root);
+prettyPrint(rebuiltTree);
